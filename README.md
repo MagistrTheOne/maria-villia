@@ -7,6 +7,6 @@
 
 - **Frontend:** React + Vite
 - **Styling:** Tailwind CSS
-- **Backend API:** Strapi CMS (localhost:1337)
+- **Backend API:** Strapi CMS 
 - **Deploy-ready:** Netlify, Vercel, NGINX
 
