@@ -11,7 +11,7 @@ const Hero = () => {
         <p className="text-xl md:text-2xl text-white/80 max-w-3xl">
           Самое дорогое, что ты видел на сцене.  
           <br />
-          <span className="text-pink-500 font-medium">Вечер шика, голоса и настоящего соблазна.</span>
+          <span className="text-pink-500 font-medium">Настоящее шоу.</span>
         </p>
 
         <a
