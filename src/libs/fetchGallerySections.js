@@ -5,19 +5,16 @@ export const fetchGallerySections = async () => {
 
   const json = await res.json();
 
-  const normalized = json.data.map(entry => {
-    const imageupload = entry.attributes?.imageupload || [];
+  return json.data.map(entry => {
+    const items = entry.attributes?.imageupload || [];
 
     return {
-      title: imageupload[0]?.Title || "Без названия",
-      blocks: [
-        {
-          __component: "shared.images",
-          Image: imageupload,
-        }
-      ]
+      title: items[0]?.Title || "Без названия",
+      images: items.map(item => ({
+        title: item.Title,
+        date: item.Data,
+        url: item.Image?.formats?.medium?.url || item.Image?.url || "/",
+      })),
     };
   });
-
-  return normalized;
 };
