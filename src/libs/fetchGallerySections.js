@@ -1,9 +1,9 @@
-// src/libs/fetchGallerySections.js
 const BASE_URL = "http://localhost:1337";
 
 export async function fetchGallerySections() {
+  // Попапулим только вложенный компонент и его фото
   const res = await fetch(
-    `${BASE_URL}/api/imageabouts?populate[imageabout][populate]=photo`
+    `${BASE_URL}/api/imageabouts?populate=imageabout.photo`
   );
   if (!res.ok) {
     throw new Error("Failed to fetch imageabouts");
@@ -11,17 +11,19 @@ export async function fetchGallerySections() {
 
   const { data } = await res.json();
 
-  return data.flatMap(entry => {
+  // data — это массив записей коллекции imageabouts
+  // У каждой записи в attributes.imageabout лежит массив карточек
+  return data.flatMap((entry) => {
     const cards = entry.attributes.imageabout || [];
-
-    return cards.map(card => ({
+    return cards.map((card) => ({
       title: card.Title || "Без названия",
       description: card.Description || "",
-      images: (card.photo || []).map(media => {
-        // выбираем medium, иначе оригинал
-        const relUrl = media.formats?.medium?.url || media.url;
+      images: (card.photo || []).map((media) => {
+        // выбираем medium-формат, иначе оригинал
+        const rel = media.formats?.medium?.url || media.url || "";
+        const url = rel.startsWith("/") ? BASE_URL + rel : rel;
         return {
-          url: relUrl ? BASE_URL + relUrl : "/",
+          url,
           name: media.name || "image",
         };
       }),

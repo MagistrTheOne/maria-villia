@@ -1,20 +1,16 @@
-// src/components/About.jsx
 import React, { useEffect, useState } from "react";
 import { fetchGallerySections } from "../libs/fetchGallerySections";
 import { motion } from "framer-motion";
 
 const About = () => {
-  const [sections, setSections] = useState([]);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await fetchGallerySections();
-        setSections(data);
-      } catch (err) {
-        console.error("❌ Ошибка при загрузке секции About:", err);
-      }
-    })();
+    fetchGallerySections()
+      .then(setCards)
+      .catch((err) =>
+        console.error("❌ Ошибка при загрузке секции About:", err)
+      );
   }, []);
 
   return (
@@ -29,12 +25,16 @@ const About = () => {
         </p>
       </div>
 
-      {sections.map((section, idx) => (
+      {cards.map((card, idx) => (
         <div key={idx} className="mb-24">
           <h3 className="text-2xl font-bold text-center mb-6 text-white">
-            {section.title}
+            {card.title}
           </h3>
-
+          {card.description && (
+            <p className="text-center text-white/60 mb-4">
+              {card.description}
+            </p>
+          )}
           <motion.div
             className="overflow-x-auto scrollbar-hide px-4 sm:px-16"
             initial="hidden"
@@ -45,7 +45,7 @@ const About = () => {
             }}
           >
             <div className="flex gap-6 snap-x snap-mandatory">
-              {section.images.map((img, i) => (
+              {card.images.map((img, i) => (
                 <motion.div
                   key={i}
                   className="snap-start shrink-0 w-72 bg-white/5 border border-white/10 rounded-xl overflow-hidden shadow-md"
@@ -56,7 +56,7 @@ const About = () => {
                 >
                   <img
                     src={img.url}
-                    alt={img.name || `Картинка ${i + 1}`}
+                    alt={img.name}
                     className="w-full h-48 object-cover"
                     loading="lazy"
                   />
