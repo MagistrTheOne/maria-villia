@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-center md:text-left">
         {/* Left: Logo or Title */}
         <div className="text-white font-semibold tracking-wider">
-          © {new Date().getFullYear()} MariVilia Show
+          © {new Date().getFullYear()} MariVilia Show | All Rights Reserved|сделано визионерами: M♾️1
         </div>
 
         {/* Center: Navigation Links */}

@@ -29,7 +29,10 @@ const About = () => {
       <div className="text-center mb-16">
         <h2 className="text-4xl font-bold">О проекте</h2>
         <p className="text-white/70 mt-4 text-lg max-w-3xl mx-auto">
-          MariVilia Show — искусство стоит дорого.
+          MariVilia Show — Вокальный Шоу Дуэт.
+        </p>
+        <p className="text-white/70 mt-4 text-lg max-w-3xl mx-auto">
+          Самое дорогое шоу-которое ты видел в своей жизни.
         </p>
       </div>
 
