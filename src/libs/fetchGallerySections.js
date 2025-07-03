@@ -12,22 +12,16 @@ export const fetchGallerySections = async () => {
 
     return {
       title: items[0]?.Title || "Без названия",
-      images: items.map(item => {
-        const rawUrl = item.Image?.formats?.medium?.url || item.Image?.url || "/";
-        const fullUrl = rawUrl.startsWith("/") ? BASE_URL + rawUrl : rawUrl;
-
-        console.log("🖼️ item:", {
-          title: item.Title,
-          date: item.Data,
-          fullUrl,
-        });
-
-        return {
-          title: item.Title,
-          date: item.Data,
-          url: fullUrl,
-        };
-      }),
+      images: items.map(item => ({
+        title: item.Title,
+        date: item.Data,
+        url:
+          item.Image?.formats?.medium?.url
+            ? BASE_URL + item.Image.formats.medium.url
+            : item.Image?.url
+            ? BASE_URL + item.Image.url
+            : "/",
+      })),
     };
   });
 };
