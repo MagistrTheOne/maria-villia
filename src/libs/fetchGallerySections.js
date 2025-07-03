@@ -10,12 +10,14 @@ export const fetchGallerySections = async () => {
 
     return {
       title: items[0]?.Title || "Без названия",
-      images: items.map(item => ({
-        title: item.Title,
-        date: item.Data,
-        url: item.Image?.formats?.medium?.url || item.Image?.url || "/",
-      })),
+      images: items.map(item => {
+        console.log("item:", item); // ← вот тут всё ок
+        return {
+          title: item.Title,
+          date: item.Data,
+          url: item.Image?.formats?.medium?.url || item.Image?.url || "/",
+        };
+      }),
     };
   });
 };
-console.log(item);
