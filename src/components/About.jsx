@@ -1,4 +1,3 @@
-// src/components/About.jsx
 import React, { useEffect, useState } from "react";
 import { fetchGallerySections } from "../libs/fetchGallerySections";
 import { motion } from "framer-motion";
@@ -25,7 +24,7 @@ const About = () => {
           MariVilia Show — Вокальный Шоу дуэт.
         </p>
         <p className="text-white/70 mt-4 text-lg max-w-3xl mx-auto">
-          Самое дорогое шоу-которое ты видел в своей жизни.
+          Самое дорогое шоу, которое ты видел в своей жизни.
         </p>
       </div>
 
