@@ -17,52 +17,52 @@ const About = () => {
     load();
   }, []);
 
+  const renderImagesBlock = (block, index) => (
+    <motion.div
+      key={index}
+      className="overflow-x-auto scrollbar-hide px-4 sm:px-16 my-12"
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: {},
+        visible: {
+          transition: { staggerChildren: 0.1 },
+        },
+      }}
+    >
+      <div className="flex gap-6 snap-x snap-mandatory">
+        {block.Image?.map((item, i) => {
+          const img = item.Image;
+          const url = img?.formats?.medium?.url || img?.url || "/";
+          return (
+            <motion.div
+              key={i}
+              className="snap-start shrink-0 w-72 bg-white/5 border border-white/10 rounded-xl overflow-hidden shadow-md"
+              whileHover={{ scale: 1.03 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <img
+                src={url}
+                alt={item.Title || `Картинка ${i + 1}`}
+                className="w-full h-48 object-cover"
+                loading="lazy"
+              />
+              {item.Title && (
+                <div className="p-3 text-sm text-white/70">{item.Title}</div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+
   const renderBlock = (block, index) => {
     switch (block.__component) {
       case "shared.images":
-        return (
-          <motion.div
-            key={index}
-            className="overflow-x-auto scrollbar-hide px-4 sm:px-16 my-12"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.1 },
-              },
-            }}
-          >
-            <div className="flex gap-6 snap-x snap-mandatory">
-              {block.Image?.map((item, i) => {
-                const img = item.Image;
-                const url = img?.formats?.medium?.url || img?.url || "/";
-                return (
-                  <motion.div
-                    key={i}
-                    className="snap-start shrink-0 w-72 bg-white/5 border border-white/10 rounded-xl overflow-hidden shadow-md"
-                    whileHover={{ scale: 1.03 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <img
-                      src={url}
-                      alt={item.Title || `Картинка ${i + 1}`}
-                      className="w-full h-48 object-cover"
-                      loading="lazy"
-                    />
-                    {item.Title && (
-                      <div className="p-3 text-sm text-white/70">
-                        {item.Title}
-                      </div>
-                    )}
-                  </motion.div>
-                );
-              })}
-            </div>
-          </motion.div>
-        );
+        return renderImagesBlock(block, index);
 
       case "shared.quote":
         return (
@@ -126,7 +126,9 @@ const About = () => {
               {section.title}
             </h3>
           )}
-          {section.blocks.map((block, i) => renderBlock(block, `${idx}-${i}`))}
+          {section.blocks?.map((block, i) =>
+            renderBlock(block, `${idx}-${i}`)
+          )}
         </div>
       ))}
     </section>

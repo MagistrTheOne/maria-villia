@@ -1,18 +1,21 @@
 export const fetchGallerySections = async () => {
-  const res = await fetch("http://localhost:1337/api/imagesuploadies?populate[imageupload][populate]=*");
+  const res = await fetch("http://localhost:1337/api/imagesuploadies?populate[imageupload][populate]=Image");
 
   if (!res.ok) throw new Error("Failed to fetch imagesuploadies");
 
   const json = await res.json();
 
-  // Преобразуем под структуру с секцией (title + blocks)
-  const normalized = json.data.map(item => {
+  const normalized = json.data.map(entry => {
+    const imageupload = entry.attributes?.imageupload || [];
+
     return {
-      title: item.imageupload?.[0]?.Title || "Без названия", // секционный тайтл (первый айтем)
-      blocks: item.imageupload.map(card => ({
-        __component: "shared.images",
-        Image: [card] // как галерея из одного или нескольких
-      }))
+      title: imageupload[0]?.Title || "Без названия",
+      blocks: [
+        {
+          __component: "shared.images",
+          Image: imageupload,
+        }
+      ]
     };
   });
 
