@@ -1,35 +1,32 @@
 const BASE_URL = "http://localhost:1337";
 
 export const fetchGallerySections = async () => {
-  const res = await fetch(
-    // Попапулим сразу вложенное поле imageupload.Image
-    `${BASE_URL}/api/imagesuploadies?populate[imageupload][populate]=Image`
-  );
+  // попапулим **всё** сразу — звездочкой
+  const res = await fetch(`${BASE_URL}/api/imagesuploadies?populate=*`);
   if (!res.ok) {
     throw new Error("Failed to fetch imagesuploadies");
   }
 
-  const json = await res.json();
-  console.log("Ответ Strapi:", json);
+  const { data } = await res.json();
+  console.log("Ответ Strapi:", data);
 
-  // Преобразуем в нужную форму
-  return json.data.map((entry) => {
-    const items = entry.attributes?.imageupload || [];
+  return data.map((entry) => {
+    // вытаскиваем компонент-репитабл
+    const items = entry.attributes.imageupload || [];
 
     return {
       title: items[0]?.Title || "Без названия",
       images: items.map((item) => {
-        const media = item.Image; // теперь это объект
-        const medium = media?.formats?.medium;
+        // здесь Strapi отдаёт Image уже как объект
+        const media = item.Image;
+        // сначала пробуем medium, иначе оригинал
+        const relUrl = media?.formats?.medium?.url || media?.url;
+        const url = relUrl ? BASE_URL + relUrl : "/";
 
         return {
           title: item.Title,
           date: item.Data,
-          url: medium?.url
-            ? BASE_URL + medium.url
-            : media?.url
-            ? BASE_URL + media.url
-            : "/",
+          url,
         };
       }),
     };
