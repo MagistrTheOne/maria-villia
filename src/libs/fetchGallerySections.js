@@ -1,26 +1,20 @@
-export const fetchImageUploads = async () => {
-  try {
-    const res = await fetch("http://localhost:1337/api/imagesuploadies?populate[ImageCard][populate]=Image");
-    const json = await res.json();
-    return json.data.map(entry => {
-      const card = entry.attributes.ImageCard || {};
-      const imageData = card.Image || {};
-      const imageUrl =
-        imageData.formats?.medium?.url ||
-        imageData.url ||
-        "";
+export const fetchGallerySections = async () => {
+  const res = await fetch("http://localhost:1337/api/imagesuploadies?populate[imageupload][populate]=*");
 
-      return {
-        id: entry.id,
-        title: card.Title || "Без названия",
-        image: imageUrl.startsWith("/")
-          ? `http://localhost:1337${imageUrl}`
-          : imageUrl,
-        date: card.Data || "",
-      };
-    });
-  } catch (err) {
-    console.error("🔥 Ошибка в fetchImageUploads:", err);
-    return [];
-  }
+  if (!res.ok) throw new Error("Failed to fetch imagesuploadies");
+
+  const json = await res.json();
+
+  // Преобразуем под структуру с секцией (title + blocks)
+  const normalized = json.data.map(item => {
+    return {
+      title: item.imageupload?.[0]?.Title || "Без названия", // секционный тайтл (первый айтем)
+      blocks: item.imageupload.map(card => ({
+        __component: "shared.images",
+        Image: [card] // как галерея из одного или нескольких
+      }))
+    };
+  });
+
+  return normalized;
 };
