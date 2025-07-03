@@ -1,3 +1,4 @@
+// src/components/About.jsx
 import React, { useEffect, useState } from "react";
 import { fetchGallerySections } from "../libs/fetchGallerySections";
 import { motion } from "framer-motion";
@@ -59,7 +60,9 @@ const About = () => {
                     className="w-full h-48 object-cover"
                     loading="lazy"
                   />
-                  <div className="p-3 text-sm text-white/70">{img.name}</div>
+                  <div className="p-3 text-sm text-white/70">
+                    {img.name}
+                  </div>
                 </motion.div>
               ))}
             </div>

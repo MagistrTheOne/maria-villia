@@ -1,16 +1,15 @@
+// src/libs/fetchGallerySections.js
 const BASE_URL = "http://localhost:1337";
 
-export const fetchGallerySections = async () => {
+export async function fetchGallerySections() {
   const res = await fetch(
     `${BASE_URL}/api/imageabouts?populate[imageabout][populate]=photo`
   );
-
   if (!res.ok) {
     throw new Error("Failed to fetch imageabouts");
   }
 
   const { data } = await res.json();
-  console.log("Ответ Strapi:", data);
 
   return data.flatMap(entry => {
     const cards = entry.attributes.imageabout || [];
@@ -19,6 +18,7 @@ export const fetchGallerySections = async () => {
       title: card.Title || "Без названия",
       description: card.Description || "",
       images: (card.photo || []).map(media => {
+        // выбираем medium, иначе оригинал
         const relUrl = media.formats?.medium?.url || media.url;
         return {
           url: relUrl ? BASE_URL + relUrl : "/",
@@ -27,4 +27,4 @@ export const fetchGallerySections = async () => {
       }),
     }));
   });
-};
+}
