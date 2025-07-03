@@ -64,10 +64,50 @@ const About = () => {
           </motion.div>
         );
 
-      // Можно добавить другие блоки тут
       case "shared.quote":
+        return (
+          <div
+            key={index}
+            className="max-w-4xl mx-auto px-4 py-12 text-center"
+          >
+            <blockquote className="text-2xl italic text-white/80">
+              "{block.text}"
+            </blockquote>
+            {block.author && (
+              <p className="mt-4 text-white/60">— {block.author}</p>
+            )}
+          </div>
+        );
+
       case "shared.rich-text":
+        return (
+          <div
+            key={index}
+            className="max-w-3xl mx-auto px-4 py-8 text-white/90 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: block.content }}
+          />
+        );
+
       case "shared.slider":
+        return (
+          <div
+            key={index}
+            className="w-full overflow-hidden px-4 py-12"
+          >
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide">
+              {block.items?.map((item, i) => (
+                <div
+                  key={i}
+                  className="min-w-[300px] bg-white/10 text-white p-6 rounded-lg shadow-md"
+                >
+                  <h4 className="text-xl font-semibold mb-2">{item.title}</h4>
+                  <p className="text-white/70 text-sm">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
