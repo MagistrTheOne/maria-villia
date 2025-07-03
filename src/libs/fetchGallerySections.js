@@ -1,7 +1,9 @@
 const BASE_URL = "http://localhost:1337";
 
 export const fetchGallerySections = async () => {
-  const res = await fetch(`${BASE_URL}/api/imagesuploadies?populate[imageupload]=*`);
+  const res = await fetch(
+    `${BASE_URL}/api/imagesuploadies?populate[imageupload][populate]=Image`
+  );
 
   if (!res.ok) throw new Error("Failed to fetch imagesuploadies");
 
