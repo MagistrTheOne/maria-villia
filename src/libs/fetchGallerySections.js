@@ -9,6 +9,9 @@ export const fetchGallerySections = async () => {
 
   const json = await res.json();
 
+  // Логируем json здесь, до return
+  console.log("💾 Ответ Strapi:", json);
+
   return json.data.map(entry => {
     const items = entry.attributes?.imageupload || [];
 
