@@ -18,3 +18,4 @@ export const fetchGallerySections = async () => {
     };
   });
 };
+console.log(item);
