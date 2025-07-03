@@ -1,3 +1,4 @@
+// src/components/About.jsx
 import React, { useEffect, useState } from "react";
 import { fetchGallerySections } from "../libs/fetchGallerySections";
 import { motion } from "framer-motion";
@@ -6,16 +7,14 @@ const About = () => {
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
-    const load = async () => {
+    (async () => {
       try {
         const data = await fetchGallerySections();
         setSections(data);
       } catch (err) {
         console.error("❌ Ошибка при загрузке секции About:", err);
       }
-    };
-
-    load();
+    })();
   }, []);
 
   return (
@@ -32,11 +31,9 @@ const About = () => {
 
       {sections.map((section, idx) => (
         <div key={idx} className="mb-24">
-          {section.title && (
-            <h3 className="text-2xl font-bold text-center mb-6 text-white">
-              {section.title}
-            </h3>
-          )}
+          <h3 className="text-2xl font-bold text-center mb-6 text-white">
+            {section.title}
+          </h3>
 
           <motion.div
             className="overflow-x-auto scrollbar-hide px-4 sm:px-16"
@@ -44,9 +41,7 @@ const About = () => {
             animate="visible"
             variants={{
               hidden: {},
-              visible: {
-                transition: { staggerChildren: 0.1 },
-              },
+              visible: { transition: { staggerChildren: 0.1 } },
             }}
           >
             <div className="flex gap-6 snap-x snap-mandatory">
@@ -65,9 +60,9 @@ const About = () => {
                     className="w-full h-48 object-cover"
                     loading="lazy"
                   />
-                  {img.title && (
-                    <div className="p-3 text-sm text-white/70">{img.title}</div>
-                  )}
+                  <div className="p-3 text-sm text-white/70">
+                    {img.title}
+                  </div>
                 </motion.div>
               ))}
             </div>
