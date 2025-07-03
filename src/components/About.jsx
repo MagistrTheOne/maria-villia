@@ -8,7 +8,7 @@ const About = () => {
   useEffect(() => {
     fetchGallerySections()
       .then(setCards)
-      .catch((err) =>
+      .catch(err =>
         console.error("❌ Ошибка при загрузке секции About:", err)
       );
   }, []);
@@ -27,11 +27,11 @@ const About = () => {
 
       {cards.map((card, idx) => (
         <div key={idx} className="mb-24">
-          <h3 className="text-2xl font-bold text-center mb-6 text-white">
+          <h3 className="text-2xl font-bold text-center mb-2 text-white">
             {card.title}
           </h3>
           {card.description && (
-            <p className="text-center text-white/60 mb-4">
+            <p className="text-center text-white/60 mb-6">
               {card.description}
             </p>
           )}
