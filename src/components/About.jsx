@@ -3,13 +3,13 @@ import { fetchGallerySections } from "../api/gallery-sections";
 import { motion } from "framer-motion";
 
 const About = () => {
-  const [blocks, setBlocks] = useState([]);
+  const [sections, setSections] = useState([]);
 
   useEffect(() => {
     const load = async () => {
       try {
         const data = await fetchGallerySections();
-        setBlocks(data);
+        setSections(data);
       } catch (err) {
         console.error("Ошибка при загрузке блоков:", err);
       }
@@ -66,10 +66,7 @@ const About = () => {
 
       case "shared.quote":
         return (
-          <div
-            key={index}
-            className="max-w-4xl mx-auto px-4 py-12 text-center"
-          >
+          <div key={index} className="max-w-4xl mx-auto px-4 py-12 text-center">
             <blockquote className="text-2xl italic text-white/80">
               "{block.text}"
             </blockquote>
@@ -90,10 +87,7 @@ const About = () => {
 
       case "shared.slider":
         return (
-          <div
-            key={index}
-            className="w-full overflow-hidden px-4 py-12"
-          >
+          <div key={index} className="w-full overflow-hidden px-4 py-12">
             <div className="flex gap-4 overflow-x-auto scrollbar-hide">
               {block.items?.map((item, i) => (
                 <div
@@ -125,7 +119,16 @@ const About = () => {
         </p>
       </div>
 
-      {blocks.map(renderBlock)}
+      {sections.map((section, idx) => (
+        <div key={idx} className="mb-24">
+          {section.title && (
+            <h3 className="text-2xl font-bold text-center mb-6 text-white">
+              {section.title}
+            </h3>
+          )}
+          {section.blocks.map((block, i) => renderBlock(block, `${idx}-${i}`))}
+        </div>
+      ))}
     </section>
   );
 };
