@@ -11,7 +11,7 @@ const About = () => {
         const data = await fetchGallerySections();
         setSections(data);
       } catch (err) {
-        console.error("Ошибка при загрузке секции About:", err);
+        console.error("❌ Ошибка при загрузке секции About:", err);
       }
     };
 

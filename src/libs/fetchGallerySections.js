@@ -1,5 +1,7 @@
+const BASE_URL = "http://localhost:1337";
+
 export const fetchGallerySections = async () => {
-  const res = await fetch("http://localhost:1337/api/imagesuploadies?populate[imageupload][populate]=Image");
+  const res = await fetch(`${BASE_URL}/api/imagesuploadies?populate[imageupload][populate]=Image`);
 
   if (!res.ok) throw new Error("Failed to fetch imagesuploadies");
 
@@ -11,11 +13,19 @@ export const fetchGallerySections = async () => {
     return {
       title: items[0]?.Title || "Без названия",
       images: items.map(item => {
-        console.log("item:", item); // ← вот тут всё ок
+        const rawUrl = item.Image?.formats?.medium?.url || item.Image?.url || "/";
+        const fullUrl = rawUrl.startsWith("/") ? BASE_URL + rawUrl : rawUrl;
+
+        console.log("🖼️ item:", {
+          title: item.Title,
+          date: item.Data,
+          fullUrl,
+        });
+
         return {
           title: item.Title,
           date: item.Data,
-          url: item.Image?.formats?.medium?.url || item.Image?.url || "/",
+          url: fullUrl,
         };
       }),
     };
