@@ -55,13 +55,11 @@ const About = () => {
                 >
                   <img
                     src={img.url}
-                    alt={img.title || `Картинка ${i + 1}`}
+                    alt={img.name || `Картинка ${i + 1}`}
                     className="w-full h-48 object-cover"
                     loading="lazy"
                   />
-                  <div className="p-3 text-sm text-white/70">
-                    {img.title}
-                  </div>
+                  <div className="p-3 text-sm text-white/70">{img.name}</div>
                 </motion.div>
               ))}
             </div>
